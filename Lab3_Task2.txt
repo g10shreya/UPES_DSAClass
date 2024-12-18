@@ -1,0 +1,226 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+// Node structure for the doubly linked list 
+struct Node { 
+int data; 
+struct Node* next; 
+struct Node* prev; 
+}; 
+// Function to create a new node 
+struct Node* createNode(int data) { 
+struct Node* newNode = (struct Node*)malloc(sizeof(struct Node)); 
+newNode->data = data; 
+    newNode->next = NULL; 
+    newNode->prev = NULL; 
+    return newNode; 
+} 
+ 
+// Function to insert at the beginning 
+void insertAtBeginning(struct Node** head, int data) { 
+    struct Node* newNode = createNode(data); 
+    if (*head != NULL) { 
+        (*head)->prev = newNode; 
+    } 
+    newNode->next = *head; 
+    *head = newNode; 
+} 
+ 
+// Function to insert at the end 
+void insertAtEnd(struct Node** head, int data) { 
+    struct Node* newNode = createNode(data); 
+    if (*head == NULL) { 
+        *head = newNode; 
+        return; 
+    } 
+    struct Node* temp = *head; 
+    while (temp->next != NULL) { 
+        temp = temp->next; 
+    } 
+    temp->next = newNode; 
+    newNode->prev = temp; 
+} 
+ 
+// Function to insert at a specific position (1-based index) 
+void insertAtPosition(struct Node** head, int data, int position) { 
+    if (position < 1) { 
+        printf("Invalid position!\n"); 
+        return; 
+    } 
+    if (position == 1) { 
+        insertAtBeginning(head, data); 
+        return; 
+    } 
+    struct Node* newNode = createNode(data); 
+    struct Node* temp = *head; 
+    for (int i = 1; i < position - 1 && temp != NULL; i++) { 
+        temp = temp->next; 
+    } 
+    if (temp == NULL) { 
+        printf("Position out of bounds\n"); 
+        free(newNode); 
+        return; 
+    } 
+    newNode->next = temp->next; 
+    newNode->prev = temp; 
+    if (temp->next != NULL) { 
+        temp->next->prev = newNode; 
+    } 
+    temp->next = newNode; 
+} 
+ 
+// Function to delete from the beginning 
+void deleteFromBeginning(struct Node** head) { 
+    if (*head == NULL) { 
+        printf("List is empty\n"); 
+        return; 
+    } 
+    struct Node* temp = *head; 
+    *head = (*head)->next; 
+    if (*head != NULL) { 
+        (*head)->prev = NULL; 
+    } 
+    free(temp); 
+} 
+ 
+// Function to delete from the end 
+void deleteFromEnd(struct Node** head) { 
+    if (*head == NULL) { 
+        printf("List is empty\n"); 
+        return; 
+    } 
+    struct Node* temp = *head; 
+    if (temp->next == NULL) { 
+        free(*head); 
+        *head = NULL; 
+        return; 
+    } 
+    while (temp->next != NULL) { 
+        temp = temp->next; 
+    } 
+    temp->prev->next = NULL; 
+    free(temp); 
+} 
+ 
+// Function to delete from a specific position (1-based index) 
+void deleteFromPosition(struct Node** head, int position) { 
+    if (*head == NULL || position < 1) { 
+        printf("List is empty or invalid position\n"); 
+        return; 
+    } 
+    struct Node* temp = *head; 
+    if (position == 1) { 
+        deleteFromBeginning(head); 
+        return; 
+    } 
+    for (int i = 1; i < position && temp != NULL; i++) { 
+        temp = temp->next; 
+    } 
+    if (temp == NULL) { 
+        printf("Position out of bounds\n"); 
+        return; 
+    } 
+    if (temp->next != NULL) { 
+        temp->next->prev = temp->prev; 
+    } 
+    if (temp->prev != NULL) { 
+        temp->prev->next = temp->next; 
+    } 
+    free(temp); 
+} 
+ 
+// Function to display the linked list forward 
+void displayListForward(struct Node* head) { 
+    struct Node* temp = head; 
+    if (temp == NULL) { 
+        printf("List is empty\n"); 
+        return; 
+    } 
+    printf("Linked List (Forward): "); 
+    while (temp != NULL) { 
+        printf("%d -> ", temp->data); 
+        temp = temp->next; 
+    } 
+    printf("NULL\n"); 
+} 
+ 
+// Function to display the linked list backward 
+void displayListBackward(struct Node* head) { 
+    struct Node* temp = head; 
+    if (temp == NULL) { 
+        printf("List is empty\n"); 
+        return; 
+    } 
+    while (temp->next != NULL) { 
+        temp = temp->next; 
+    } 
+    printf("Linked List (Backward): "); 
+    while (temp != NULL) { 
+        printf("%d -> ", temp->data); 
+        temp = temp->prev; 
+    } 
+    printf("NULL\n"); 
+} 
+ 
+int main() { 
+    struct Node* head = NULL; 
+    int choice, data, position; 
+ 
+    do { 
+        //printf("\n--- Doubly Linked List Menu ---\n"); 
+        printf("1. Insert at Beginning\n"); 
+        printf("2. Insert at End\n"); 
+        printf("3. Insert at Position\n"); 
+        printf("4. Delete from Beginning\n"); 
+        printf("5. Delete from End\n"); 
+        printf("6. Delete from Position\n"); 
+        printf("7. Display List Forward\n"); 
+        printf("8. Display List Backward\n"); 
+        printf("9. Exit\n"); 
+        printf("Enter your choice: "); 
+        scanf("%d", &choice); 
+ 
+        switch (choice) { 
+            case 1: 
+                printf("Enter data: "); 
+                scanf("%d", &data); 
+                insertAtBeginning(&head, data); 
+                break; 
+            case 2: 
+                printf("Enter data: "); 
+                scanf("%d", &data); 
+                insertAtEnd(&head, data); 
+                break; 
+            case 3: 
+                printf("Enter data: "); 
+                scanf("%d", &data); 
+                printf("Enter position: "); 
+                scanf("%d", &position); 
+                insertAtPosition(&head, data, position); 
+                break; 
+            case 4: 
+                deleteFromBeginning(&head); 
+                break; 
+            case 5: 
+                deleteFromEnd(&head); 
+                break; 
+            case 6: 
+                printf("Enter position: "); 
+                scanf("%d", &position); 
+                deleteFromPosition(&head, position); 
+                break; 
+            case 7: 
+                displayListForward(head); 
+                break; 
+            case 8: 
+                displayListBackward(head); 
+                break; 
+            case 9: 
+                printf("Exiting...\n"); 
+                break; 
+            default: 
+                printf("Invalid choice. Please try again.\n"); 
+        } 
+    } while (choice != 9); 
+ 
+    return 0; 
+}

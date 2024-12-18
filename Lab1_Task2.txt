@@ -1,0 +1,92 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+#define MAX_NAME_LEN 50 
+// Define the structure for Student 
+struct Student { 
+char name[MAX_NAME_LEN]; 
+int age; 
+f
+ loat marks; 
+}; 
+ 
+// Function prototypes 
+void inputStudentDetails(struct Student students[], int n); 
+void displayStudentDetails(struct Student students[], int n); 
+void sortStudentsByMarks(struct Student students[], int n); 
+struct Student findTopStudent(struct Student students[], int n); 
+ 
+int main() { 
+    int n; 
+     
+    // Input number of students 
+    printf("Enter the number of students: "); 
+    scanf("%d", &n); 
+     
+    // Declare an array of students 
+    struct Student *students = (struct Student *)malloc(n * sizeof(struct Student)); 
+     
+    // Input details for all students 
+    inputStudentDetails(students, n); 
+     
+    // Display details of all students 
+    printf("\nDetails of all students:\n"); 
+    displayStudentDetails(students, n); 
+     
+    // Sort students based on marks in descending order 
+    sortStudentsByMarks(students, n); 
+    printf("\nStudents sorted by marks (descending):\n"); 
+    displayStudentDetails(students, n); 
+     
+    // Find and display the student with the highest marks 
+    struct Student topStudent = findTopStudent(students, n); 
+    printf("\nStudent with the highest marks:\n"); 
+    printf("Name: %s, Age: %d, Marks: %.2f\n", topStudent.name, topStudent.age, topStudent.marks); 
+     
+    return 0; 
+} 
+ 
+// Function to input details of students 
+void inputStudentDetails(struct Student students[], int n) { 
+    for (int i = 0; i < n; i++) { 
+        printf("\nEnter details for student %d:\n", i + 1); 
+        printf("Name: "); 
+        scanf("%s", students[i].name);  // No spaces allowed in names, can be replaced with fgets if needed 
+        printf("Age: "); 
+        scanf("%d", &students[i].age); 
+        printf("Marks: "); 
+        scanf("%f", &students[i].marks); 
+    } 
+} 
+ 
+// Function to display details of students 
+void displayStudentDetails(struct Student students[], int n) { 
+    for (int i = 0; i < n; i++) { 
+        printf("Name: %s, Age: %d, Marks: %.2f\n", students[i].name, students[i].age, students[i].marks); 
+    } 
+} 
+ 
+// Function to sort students by marks in descending order 
+void sortStudentsByMarks(struct Student students[], int n) { 
+    struct Student temp; 
+    for (int i = 0; i < n - 1; i++) { 
+        for (int j = i + 1; j < n; j++) { 
+            if (students[i].marks < students[j].marks) { 
+                // Swap the students 
+                temp = students[i]; 
+                students[i] = students[j]; 
+                students[j] = temp; 
+            } 
+        } 
+    } 
+} 
+ 
+// Function to find the student with the highest marks 
+struct Student findTopStudent(struct Student students[], int n) { 
+    struct Student topStudent = students[0]; 
+    for (int i = 1; i < n; i++) { 
+        if (students[i].marks > topStudent.marks) { 
+            topStudent = students[i]; 
+        } 
+    } 
+    return topStudent; 
+}

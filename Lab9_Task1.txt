@@ -1,0 +1,57 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+#define MAX_SIZE 100 
+// Function to insert a value into the binary tree array 
+void insert(int tree[], int* size, int value) { 
+    if (*size >= MAX_SIZE) { 
+        printf("Binary tree is full, cannot insert more elements.\n"); 
+        return; 
+    } 
+    // Insert the new value at the end of the current array 
+    tree[*size] = value; 
+    (*size)++; 
+    printf("Inserted %d into the binary tree.\n", value); 
+} 
+// Function to display the binary tree array representation 
+void displayTree(int tree[], int size) { 
+    if (size == 0) { 
+        printf("Binary tree is empty.\n"); 
+        return; 
+    } 
+ 
+    printf("Binary tree in array representation:\n"); 
+    for (int i = 0; i < size; i++) { 
+        printf("%d ", tree[i]); 
+    } 
+    printf("\n"); 
+} 
+int main() { 
+    int tree[MAX_SIZE]; // Array to represent the binary tree 
+    int size = 0;       // Current number of nodes in the binary tree 
+    int choice, value; 
+    do { 
+        printf("\n--- Binary Tree Menu ---\n"); 
+        printf("1. Insert Element\n"); 
+        printf("2. Display Tree\n"); 
+        printf("3. Exit\n"); 
+        printf("Enter your choice: "); 
+        scanf("%d", &choice); 
+ 
+        switch (choice) { 
+            case 1: 
+                printf("Enter value to insert: "); 
+                scanf("%d", &value); 
+                insert(tree, &size, value); 
+                break; 
+            case 2: 
+                displayTree(tree, size); 
+                break; 
+            case 3: 
+                printf("Exiting...\n"); 
+                break; 
+            default: 
+printf("Invalid choice. Please try again.\n"); 
+} 
+} while (choice != 4); 
+return 0; 
+} 

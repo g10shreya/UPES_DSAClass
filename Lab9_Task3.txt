@@ -1,0 +1,117 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+struct TreeNode { 
+int data; 
+struct TreeNode* left; 
+struct TreeNode* right; 
+}; 
+// Function to create a new node 
+struct TreeNode* createNode(int value) { 
+struct TreeNode* newNode = (struct TreeNode*)malloc(sizeof(struct TreeNode)); 
+newNode->data = value; 
+newNode->left = NULL; 
+newNode->right = NULL; 
+return newNode; 
+} 
+// In-order traversal: Left, Root, Right 
+void inOrderTraversal(struct TreeNode* root) { 
+if (root != NULL) { 
+inOrderTraversal(root->left); 
+printf("%d ", root->data); 
+inOrderTraversal(root->right); 
+} 
+} 
+// Pre-order traversal: Root, Left, Right 
+void preOrderTraversal(struct TreeNode* root) { 
+if (root != NULL) { 
+        printf("%d ", root->data); 
+        preOrderTraversal(root->left); 
+        preOrderTraversal(root->right); 
+    } 
+} 
+// Post-order traversal: Left, Right, Root 
+void postOrderTraversal(struct TreeNode* root) { 
+    if (root != NULL) { 
+        postOrderTraversal(root->left); 
+        postOrderTraversal(root->right); 
+        printf("%d ", root->data); 
+    } 
+} 
+// Level-order traversal (Breadth-first traversal) using a queue 
+void levelOrderTraversal(struct TreeNode* root) { 
+    if (root == NULL) return; 
+ 
+    // Define a simple queue using an array 
+    struct TreeNode* queue[100]; 
+    int front = 0, rear = 0; 
+ 
+    queue[rear++] = root; 
+ 
+    while (front < rear) { 
+        struct TreeNode* current = queue[front++]; 
+        printf("%d ", current->data); 
+        if (current->left != NULL) queue[rear++] = current->left; 
+        if (current->right != NULL) queue[rear++] = current->right; 
+    }} 
+ 
+// inserting a node (simple binary tree insertion) 
+struct TreeNode* insertNode(struct TreeNode* root, int value) { 
+    if (root == NULL)  
+        return createNode(value); 
+    if (value < root->data) { 
+        root->left = insertNode(root->left, value); 
+    } else if (value > root->data) { 
+        root->right = insertNode(root->right, value); 
+    } else  
+        printf("Value already exists in the tree.\n"); 
+    return root; 
+} 
+int main() { 
+    struct TreeNode* root = NULL; 
+    int choice, value; 
+    do { 
+        printf("\n--- Binary Tree Menu ---\n"); 
+        printf("1. Insert Node\n"); 
+        printf("2. In-order Traversal\n"); 
+        printf("3. Pre-order Traversal\n"); 
+        printf("4. Post-order Traversal\n"); 
+        printf("5. Level-order Traversal\n"); 
+        printf("6. Exit\n"); 
+        printf("Enter your choice: "); 
+        scanf("%d", &choice); 
+ 
+        switch (choice) { 
+            case 1: 
+                printf("Enter value to insert: "); 
+                scanf("%d", &value); 
+                root = insertNode(root, value); 
+                break; 
+            case 2: 
+                printf("In-order traversal: "); 
+                inOrderTraversal(root); 
+                printf("\n"); 
+                break; 
+            case 3: 
+                printf("Pre-order traversal: "); 
+                preOrderTraversal(root); 
+                printf("\n"); 
+                break; 
+            case 4: 
+                printf("Post-order traversal: "); 
+                postOrderTraversal(root); 
+                printf("\n"); 
+                break; 
+            case 5: 
+                printf("Level-order traversal: "); 
+                levelOrderTraversal(root); 
+                printf("\n"); 
+                break; 
+            case 6: 
+                printf("Exiting...\n"); 
+                break; 
+            default: 
+                printf("Invalid choice. Please try again.\n"); 
+} 
+} while (choice != 6); 
+return 0; 
+}

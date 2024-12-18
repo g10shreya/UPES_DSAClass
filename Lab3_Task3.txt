@@ -1,0 +1,105 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <string.h> 
+// Define the structure for a task node in the to-do list 
+struct Task { 
+char description[100]; 
+struct Task* next; 
+}; 
+// Head pointer to point to the first task in the to-do list 
+struct Task* head = NULL; 
+// Function to add a new task at the end of the to-do list 
+void addTask(char* description) { 
+struct Task* newTask = (struct Task*)malloc(sizeof(struct Task)); 
+strcpy(newTask->description, description); 
+newTask->next = NULL; 
+if (head == NULL) { 
+head = newTask; 
+} else { 
+struct Task* temp = head; 
+while (temp->next != NULL) { 
+temp = temp->next; 
+} 
+temp->next = newTask; 
+} 
+printf("Task added: %s\n", description); 
+} 
+// Function to mark a task as completed by removing it from the to-do list 
+void completeTask(int position) { 
+if (head == NULL) { 
+printf("To-do list is empty\n"); 
+return; 
+} 
+struct Task* temp = head; 
+// If the task to be completed is the first task 
+if (position == 1) { 
+head = head->next; 
+printf("Completed task: %s\n", temp->description); 
+free(temp); 
+return; 
+} 
+// Traverse to the specified position 
+struct Task* prev = NULL; 
+for (int i = 1; i < position && temp != NULL; i++) { 
+prev = temp; 
+temp = temp->next; 
+} 
+if (temp == NULL) { 
+printf("Invalid position! Task not found.\n"); 
+} else { 
+prev->next = temp->next; 
+printf("Completed task: %s\n", temp->description); 
+free(temp); 
+} 
+} 
+// Function to display all tasks in the to-do list 
+void displayTasks() { 
+struct Task* temp = head; 
+if (temp == NULL) { 
+printf("To-do list is empty\n"); 
+return; 
+} 
+int taskNumber = 1; 
+printf("To-Do List:\n"); 
+while (temp != NULL) { 
+printf("%d. %s\n", taskNumber, temp->description); 
+temp = temp->next; 
+taskNumber++; 
+} 
+} 
+// Main function with a menu-driven interface 
+int main() { 
+int choice, position; 
+char description[100]; 
+while (1) { 
+printf("\nTo-Do List Menu:\n"); 
+printf("1. Add Task\n"); 
+printf("2. Complete Task\n"); 
+printf("3. Display Tasks\n"); 
+printf("4. Exit\n"); 
+printf("Enter your choice: "); 
+scanf("%d", &choice); 
+getchar(); // To consume the newline character left by scanf 
+switch (choice) { 
+case 1: 
+printf("Enter task description: "); 
+fgets(description, sizeof(description), stdin); 
+description[strcspn(description, "\n")] = '\0'; // Remove trailing newline 
+addTask(description); 
+break; 
+case 2: 
+printf("Enter task number to complete: "); 
+scanf("%d", &position); 
+completeTask(position); 
+break; 
+case 3: 
+displayTasks(); 
+break; 
+case 4: 
+exit(0); 
+default: 
+printf("Invalid choice. Please try again.\n"); 
+} 
+} 
+return 0; 
+} 

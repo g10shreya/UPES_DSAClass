@@ -1,0 +1,95 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+typedef struct Node { 
+int data; 
+struct Node* next; 
+} Node; 
+typedef struct { 
+Node* front; 
+Node* rear; 
+} Queue; 
+void initializeQueue(Queue* q) { 
+q->front = NULL; 
+q->rear = NULL; 
+} 
+// Check if the queue is empty 
+int isEmpty(Queue* q) { 
+return q->front == NULL; 
+} 
+void enqueue(Queue* q, int value) { 
+Node* newNode = (Node*)malloc(sizeof(Node)); 
+    if (!newNode) { 
+        printf("Memory allocation failed\n"); 
+        return; 
+    } 
+    newNode->data = value; 
+    newNode->next = NULL; 
+    if (isEmpty(q)) { 
+        q->front = newNode; 
+    } else { 
+        q->rear->next = newNode; 
+    } 
+    q->rear = newNode; 
+    printf("Enqueued: %d\n", value); 
+} 
+ 
+int dequeue(Queue* q) { 
+    if (isEmpty(q)) { 
+        printf("Queue is empty\n"); 
+        return -1; 
+    } 
+    int item = q->front->data; 
+    Node* temp = q->front; 
+    q->front = q->front->next; 
+    if (q->front == NULL) { 
+        q->rear = NULL; 
+    } 
+    free(temp); 
+    printf("Dequeued: %d\n", item); 
+    return item; 
+} 
+ 
+void displayQueue(Queue* q) { 
+    if (isEmpty(q)) { 
+        printf("Queue is empty\n"); 
+        return; 
+    } 
+    Node* temp = q->front; 
+    printf("Queue: "); 
+    while (temp != NULL) { 
+        printf("%d ", temp->data); 
+        temp = temp->next; 
+    } 
+    printf("\n"); 
+} 
+ 
+int main() { 
+    Queue q; 
+    initializeQueue(&q); 
+ 
+    int choice, val; 
+    do{ 
+        printf("\n1.insert an element\n2.Delete an element\n3.Display the queue\n4.Exit\n");   
+        printf("\nEnter your choice ?");   
+        scanf("%d",&choice);   
+        switch(choice)   
+        {   
+            case 1: 
+                printf("Enter the value to enqueue: "); 
+                scanf("%d", &val); 
+                enqueue(&q,val);   
+                break;   
+            case 2:   
+                dequeue(&q);   
+                break;   
+            case 3:   
+                displayQueue(&q);   
+                break;   
+            case 4:   
+                exit(0);   
+                break;   
+            default:    
+                printf("\nEnter valid choice??\n");   
+        }   
+    }while(choice!=4); 
+}

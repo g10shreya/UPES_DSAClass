@@ -1,0 +1,29 @@
+#include <stdio.h> 
+#include <string.h> 
+struct StudentStruct { 
+char name[20]; 
+int studID; 
+}; 
+union StudentUnion { 
+char name[20]; 
+int studID; 
+}; 
+int main() { 
+struct StudentStruct stuStruct; 
+strcpy(stuStruct.name, "Krishna"); 
+stuStruct.studID = 0011; 
+union StudentUnion stUnion; 
+strcpy(stUnion.name, "Krishna"); 
+stUnion.studID = 0011; 
+//displaying sorted values in structure 
+printf("Using structure:\n"); 
+printf("Name: %s\n", stuStruct.name); 
+printf("Student ID: %d\n", stuStruct.studID); 
+// Displaying stored values in union 
+printf("\nUsing union:\n"); 
+printf("Name: %s\n", stUnion.name);   
+printf("Student ID: %d\n", stUnion.studID); 
+// Display memory size occupied by structure and union 
+printf("\nSize of structure: %lu bytes\n", sizeof(stuStruct)); 
+printf("Size of union: %lu bytes\n", sizeof(stUnion)); 
+}
